@@ -5,7 +5,7 @@ from leafnode import LeafNode
 from textnode import text_node_to_html_node
 
 def markdown_to_html_node(markdown):
-    container = ParentNode("div", [])
+    children=[]
     blocks = markdown_to_blocks(markdown)
 
     for block in blocks:
@@ -22,9 +22,9 @@ def markdown_to_html_node(markdown):
         else:
             node = create_paragraph(block)
 
-        container.children.append(node)
-    print(container)
-    return container
+        children.append(node)
+
+    return ParentNode("div", children)
 
 
 # need to process the text using inline markdown function
