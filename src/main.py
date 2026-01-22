@@ -1,7 +1,31 @@
+import os
+import shutil
 from textnode import TextType, TextNode
 
 def main():
-    node = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
-    print(node)
+    publish_static_to_public()
+
+
+def publish_static_to_public():
+    if os.path.exists("public"):
+        shutil.rmtree("public")
+    
+    files_to_copy = os.listdir("static")
+    copy_files(files_to_copy)
+
+def copy_files(file_list, base_path = ""):
+    dest_folder = os.path.join("public", base_path)
+    if not os.path.exists(dest_folder):
+        os.mkdir(dest_folder)
+    for item in file_list:
+        source = os.path.join("static", base_path, item)
+        if os.path.isfile(source):
+            dest = os.path.join("public", base_path)
+            shutil.copy(source, dest)
+        else:
+            sub_list = os.listdir(source)
+            new_base = os.path.join(base_path, item)
+            copy_files(sub_list, new_base)
+
 
 main()
