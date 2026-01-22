@@ -14,7 +14,7 @@ def block_to_block_type(markdown):
         return BlockType.HEADING
     if re.match(r"^```\n(?:[^\n]*\n)*[^\n]*```$", markdown):
         return BlockType.CODE
-    if re.match(r"^(?:> .+\n)*> .+$", markdown):
+    if re.match(r"^(?:>\s*.+\n)*>\s*.+$", markdown):
         return BlockType.QUOTE
     if re.match(r"^(?:- .+\n)*- .+$", markdown):
         return BlockType.UNORDERED_LIST

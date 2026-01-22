@@ -43,11 +43,12 @@ def create_codeblock(markdown):
     return parent
 
 def create_quoteblock(markdown):
-    splits = markdown.split("> ")
-    children = []
-    for split in splits:
-        if split != "":
-            children.append(text_to_children(split))
+    lines = markdown.split("\n")
+    new_lines = []
+    for line in lines:
+        new_lines.append(line.lstrip(">").strip())
+    content = " ".join(new_lines)
+    children = text_to_children(content)
     return ParentNode("blockquote", children)
 
 def create_list(markdown, list_type):
