@@ -1,9 +1,10 @@
 import os
 import shutil
-from textnode import TextType, TextNode
+from generate_html import generate_page
 
 def main():
     publish_static_to_public()
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 
 def publish_static_to_public():
@@ -21,6 +22,7 @@ def copy_files(file_list, base_path = ""):
         source = os.path.join("static", base_path, item)
         if os.path.isfile(source):
             dest = os.path.join("public", base_path)
+            print(f"copying file from {source} to ")
             shutil.copy(source, dest)
         else:
             sub_list = os.listdir(source)

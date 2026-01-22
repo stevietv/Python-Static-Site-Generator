@@ -1,5 +1,5 @@
 import unittest
-from generate_html import markdown_to_html_node
+from generate_html import markdown_to_html_node, extract_title
 
 class TestGenerateHTML(unittest.TestCase):
 
@@ -89,6 +89,19 @@ Click [here](https://www.google.com) for more information
             html,
             '<div><h3>This is an <b>Important</b> heading</h3><p>This paragraph describes the image underneath</p><p><img src="https://www.imgur.com/1.png" alt="Image text"></img></p><p>Click <a href="https://www.google.com">here</a> for more information</p></div>'
         )
+
+class TestExtractTitle(unittest.TestCase):
+
+    def test_simple_title(self):
+        md = """
+welcome
+
+#   this is the title
+
+and thats it
+"""
+        title = extract_title(md)
+        self.assertEqual(title, "this is the title")
 
 if __name__ == "__main__":
     unittest.main()
