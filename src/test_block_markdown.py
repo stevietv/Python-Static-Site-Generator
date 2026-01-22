@@ -128,13 +128,13 @@ this is some code
     
     def test_block_type_single_quote_no_space(self):
         md = ">This is a quote"
-        self.assertNotEqual(block_to_block_type(md), BlockType.QUOTE)
+        self.assertEqual(block_to_block_type(md), BlockType.QUOTE)
 
     def test_block_type_multi_quote_no_space(self):
         md = """> This is a quote
 >over multiple
 > lines"""
-        self.assertNotEqual(block_to_block_type(md), BlockType.QUOTE)
+        self.assertEqual(block_to_block_type(md), BlockType.QUOTE)
 
     def test_block_type_unordered_list(self):
         md = """- item 1
