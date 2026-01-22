@@ -13,18 +13,18 @@ def markdown_to_html_node(markdown):
         blocktype = block_to_block_type(block)
         if blocktype == BlockType.HEADING:
             node = create_heading(block)
-        if blocktype == BlockType.CODE:
+        elif blocktype == BlockType.CODE:
             node = create_codeblock(block)
-        if blocktype == BlockType.QUOTE:
+        elif blocktype == BlockType.QUOTE:
             node = create_quoteblock(block)
-        if (blocktype == BlockType.UNORDERED_LIST) or (blocktype == BlockType.ORDERED_LIST):
+        elif (blocktype == BlockType.UNORDERED_LIST) or (blocktype == BlockType.ORDERED_LIST):
             node = create_list(block, blocktype)
         else:
             node = create_paragraph(block)
 
         container.children.append(node)
-
-    print(container.to_html())
+    print(container)
+    return container
 
 
 # need to process the text using inline markdown function
@@ -37,8 +37,11 @@ def create_heading(markdown):
     return ParentNode(f"h{heading_level}", children)
 
 def create_codeblock(markdown):
-    node = LeafNode("code", markdown[3:-4])
-    parent = ParentNode("pre", node)
+    text = markdown.replace("```", "")
+    if text.startswith("\n"):
+        text = text[1:]
+    node = LeafNode("code", text)
+    parent = ParentNode("pre", [node])
     return parent
 
 def create_quoteblock(markdown):
@@ -76,9 +79,3 @@ def text_to_children(text):
     for node in text_nodes:
         html_nodes.append(text_node_to_html_node(node))
     return html_nodes
-
-markdown_to_html_node("""
-- item 1
-- item _2_
-
-this is **a** paragraph with an ![image](https://imgur.com/1.png)""")
