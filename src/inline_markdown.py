@@ -12,10 +12,17 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             raise Exception("invalid markdown syntax found")
         
         split_node = node.text.split(delimiter)
-        new_node.append(TextNode(split_node[0], TextType.TEXT))
-        new_node.append(TextNode(split_node[1], text_type))
-        new_node.append(TextNode(split_node[2], TextType.TEXT))
 
+        if len(split_node) % 2 == 0:
+            raise ValueError("delimited section not closed")
+        
+        for i in range(len(split_node)):
+            if split_node[i] == "":
+                continue
+            if i % 2 == 0:
+                new_node.append(TextNode(split_node[i], TextType.TEXT))
+            else: 
+                new_node.append(TextNode(split_node[i], text_type))
         new_nodes.extend(new_node)
     return new_nodes
 
