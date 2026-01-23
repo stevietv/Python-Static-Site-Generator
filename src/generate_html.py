@@ -67,7 +67,8 @@ def create_list(markdown, list_type):
     return parent
 
 def create_paragraph(markdown):
-    text = markdown.replace("\n", " ")
+    lines = markdown.split("\n")
+    text = " ".join(lines)
     nodes = text_to_children(text)
     parent = ParentNode("p", nodes)
     return parent
@@ -76,7 +77,8 @@ def text_to_children(text):
     text_nodes = text_to_text_nodes(text)
     html_nodes = []
     for node in text_nodes:
-        html_nodes.append(text_node_to_html_node(node))
+        html_node = text_node_to_html_node(node)
+        html_nodes.append(html_node)
     return html_nodes
 
 def extract_title(markdown):
@@ -97,26 +99,3 @@ def extract_title(markdown):
         raise Exception("No H1 found in markdown")
     return title
 
-def generate_page(from_path, template_path, dest_path):
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-    
-    input_file = open(from_path, 'r')
-    markdown = input_file.read()
-    input_file.close()
-
-    template_file = open(template_path, 'r')
-    template = template_file.read()
-    template_file.close()
-    
-    html = markdown_to_html_node(markdown).to_html()
-    title = extract_title(markdown)
-
-    template = template.replace("{{ Title }}", title)
-    template = template.replace("{{ Content }}", html)
-
-    dest_folder = os.path.dirname(dest_path)
-    os.makedirs(dest_folder, exist_ok=True)
-
-    output_file = open(dest_path, 'w')
-    output_file.write(template)
-    output_file.close()
