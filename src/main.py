@@ -1,10 +1,12 @@
 import os
 import shutil
+import sys
 from generate_static import generate_pages_recursive, generate_page
 
 def main():
+    basepath = sys.argv[0]
     publish_static_to_public()
-    generate_pages_recursive("content", "template.html", "public")
+    generate_pages_recursive("content", "template.html", "public", basepath)
 
 
 def publish_static_to_public():
